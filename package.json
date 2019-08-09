@@ -1,0 +1,37 @@
+{
+  "name": "sam-assignment",
+  "version": "1.0.0",
+  "description": "Event Based Queue Simulator",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "rm -rf dist && tsc",
+    "lint": "tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'"
+  },
+  "bin": {
+    "simulator": "./dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arielril/event-based-queue-simulator.git"
+  },
+  "author": {
+    "name": "Ariel R. Ril",
+    "email": "arielril@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arielril/event-based-queue-simulator/issues"
+  },
+  "homepage": "https://github.com/arielril/event-based-queue-simulator#readme",
+  "devDependencies": {
+    "jest": "^24.8.0",
+    "ts-node": "^8.3.0",
+    "tslint": "^5.18.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "ramda": "^0.26.1"
+  }
+}
