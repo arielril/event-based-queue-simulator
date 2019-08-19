@@ -4,11 +4,33 @@ import * as joi from 'joi';
 
 import { schema } from '../constants/fileSchema';
 
-interface Parse {
-  (prop: ({ path: string })): Object
+export interface IQueueFileSchema {
+  name: string;
+  servers: number;
+  capacity: number;
+  arrival: {
+    min: number,
+    max: number,
+  };
+  service: {
+    min: number,
+    max: number,
+  };
 }
 
-function checkFile(parsedFile: Object): Object {
+export interface IFileObject {
+  arrivals: {
+    [key: string]: number,
+  };
+  rndNumbers: number[];
+  queues: IQueueFileSchema[];
+}
+
+export interface Parse {
+  (prop: ({ path: string })): IFileObject
+}
+
+function checkFile(parsedFile: IFileObject): IFileObject {
   const valid = joi.validate(parsedFile, schema, {
     stripUnknown: true,
     allowUnknown: true,
