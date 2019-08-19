@@ -1,10 +1,17 @@
 #!/usr/bin/env node
-import rnd from "./random";
+import random from './runners/random';
+import simulation from './runners/simulation';
 
-const MAX = 5000;
+const [, , command, ...args] = process.argv;
 
-const RND = rnd(MAX, 77, 23, Date.now())
-
-console.log('# X', 'Y')
-for (let i = 0; i < 1000; i += 1)
-  console.log(i, RND() / MAX)
+switch (command) {
+  case 'random':
+    random(...args);
+    break;
+  case 'run':
+    console.log('Running simulation...');
+    simulation(...args);
+    break;
+  default:
+    throw new Error('Invalid command');
+}
