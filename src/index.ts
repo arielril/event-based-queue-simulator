@@ -6,7 +6,7 @@ const [, , command, ...args] = process.argv;
 
 switch (command) {
   case 'random':
-    random(...args);
+    random();
     break;
   case 'run':
     console.log('Running simulation...');

@@ -1,6 +1,7 @@
 export interface IQueueConfig {
   name: string;
   capacity: number;
+  servers: number;
   minArrival: number;
   maxArrival: number;
   minService: number;
@@ -9,12 +10,15 @@ export interface IQueueConfig {
 
 export default class Queue<T> {
   _store: T[] = [];
+  _servers: number;
   _capacity: number;
   _name: string;
   _minArrival: number = 0;
   _maxArrival: number = 0;
   _minService: number = 0;
   _maxService: number = 0;
+  _times: number[] = [];
+  _online: number = 0;
 
   constructor (config: IQueueConfig) {
     this._name = config.name;
@@ -23,13 +27,11 @@ export default class Queue<T> {
     this._maxArrival = config.maxArrival;
     this._minService = config.minService;
     this._maxService = config.maxService;
+    this._servers = config.servers;
+    this._times = new Array(this._capacity + 1).fill(0);
   }
 
   push(val: T): void {
-    const one: number = 1;
-    if (this.size() + one > this._capacity) {
-      throw new Error('Queue is full');
-    }
     this._store.push(val);
   }
 
@@ -37,15 +39,11 @@ export default class Queue<T> {
     return this._store.shift();
   }
 
-  size(): number {
-    return this._store.length;
-  }
-
-  get capacity(): number {
+  capacity(): number {
     return this._capacity;
   }
 
-  getName(): string {
-    return this._name;
+  setTime(time: number) {
+    this._times[this._online] = Number((this._times[this._online] + time).toFixed(4));
   }
 }

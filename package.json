@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "build": "rm -rf dist && tsc",
-    "lint": "tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'"
+    "lint": "tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'",
+    "install:build": "npm install --only=production && npm run build"
   },
   "bin": {
     "simulator": "./dist/index.js"
@@ -25,9 +26,6 @@
   },
   "homepage": "https://github.com/arielril/event-based-queue-simulator#readme",
   "devDependencies": {
-    "@types/joi": "^14.3.3",
-    "@types/node": "^12.7.2",
-    "@types/ramda": "github:types/npm-ramda#dist",
     "eslint": "^6.1.0",
     "eslint-config-airbnb": "^18.0.0",
     "eslint-plugin-import": "^2.18.2",
@@ -38,6 +36,9 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
+    "@types/joi": "^14.3.3",
+    "@types/node": "^12.7.2",
+    "@types/ramda": "github:types/npm-ramda#dist",
     "joi": "^14.3.1",
     "ramda": "^0.26.1"
   }

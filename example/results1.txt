@@ -1,0 +1,21 @@
+Simulations:
+
+1. G/G/1/5, chegadas entre 2..4, atendimento entre 3..5
+  Média de Resultados:
+  - 3: 0.0019%
+  - 5.0888: 0.0032%
+  - 10.0671: 0.0063%
+  - 10.08: 0.0064%
+  - 63844.2551: 40.2625%
+  - 106577.4255: 67.2116%
+  - Tempo médio total: 158,569.9166
+
+2. G/G/2/5, chegadas entre 2..4, atendimento entre 3..5
+  Média de Resultados:
+  - 3: 0.002%
+  - 100013.1988: 66.6688%
+  - 49996.5353: 33.3277%
+  - 2.159: 0.0014%
+  - 0: 0%
+  - 0: 0%
+  - Tempo médio total: 150,014.893
