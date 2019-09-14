@@ -1,6 +1,5 @@
 import * as R from 'ramda';
 import * as fs from 'fs';
-import * as joi from 'joi';
 
 import { schema } from '../constants/fileSchema';
 
@@ -27,11 +26,11 @@ export interface IFileObject {
 }
 
 export interface Parse {
-  (prop: ({ path: string })): IFileObject
+  (prop: ({ path: string })): IFileObject;
 }
 
 function checkFile(parsedFile: IFileObject): IFileObject {
-  const valid = joi.validate(parsedFile, schema, {
+  const valid = schema.validate(parsedFile, {
     stripUnknown: true,
     allowUnknown: true,
   });
@@ -59,9 +58,9 @@ const parse: Parse = R.ifElse(
         checkFile,
       ),
       () => { throw new Error('Failed to parse file to JSON'); },
-    )
+    ),
   ),
-  () => { throw new Error('Invalid file path'); }
-)
+  () => { throw new Error('Invalid file path'); },
+);
 
 export { parse };

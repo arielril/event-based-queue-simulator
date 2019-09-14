@@ -1,4 +1,4 @@
-import * as R from "ramda";
+import * as R from 'ramda';
 
 function rnd(): (
   (max: number, c: number, a: number, seed: number) => (() => number)
@@ -11,7 +11,7 @@ function rnd(): (
         lastVal = ((a * lastVal) + c) % max;
         return lastVal;
       };
-    }
+    },
   );
 }
 

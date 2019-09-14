@@ -28,6 +28,7 @@ export default class Queue<T> {
     this._minService = config.minService;
     this._maxService = config.maxService;
     this._servers = config.servers;
+    // tslint:disable-next-line: prefer-array-literal
     this._times = new Array(this._capacity + 1).fill(0);
   }
 

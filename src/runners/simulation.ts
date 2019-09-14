@@ -1,4 +1,5 @@
-import random from './random'
+import random from './random';
+// tslint:disable-next-line: import-name
 import Queue, { IQueueConfig } from '../helpers/queue';
 import { parse, IFileObject } from '../helpers/parseFile';
 
@@ -55,7 +56,7 @@ function sortScheduler() {
     }
 
     return 1;
-  })
+  });
 }
 
 function addArrival(rnd: number, min: number, max: number) {
@@ -89,14 +90,12 @@ export default function simulation(...args: string[]): void {
   let times = 0;
   let sizeOfSimulation = 100000;
 
-  let getRND = () => { times += 1; return random(); }
+  let getRND = () => { times += 1; return random(); };
 
   if (useRandom === 'useRandom') {
-    console.log('ASDFSADF')
     sizeOfSimulation = rndNumbers.length;
-    getRND = () => { times += 1; return rndNumbers.shift() || 0; }
+    getRND = () => { times += 1; return rndNumbers.shift() || 0; };
   }
-
 
   SCHEDULER.push(fstArrival(parsedFile));
 

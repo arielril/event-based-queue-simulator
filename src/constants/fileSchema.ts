@@ -1,6 +1,6 @@
-import * as joi from 'joi';
+import joi from '@hapi/joi';
 
-const schema: joi.ObjectSchema = joi.object({
+const schema = joi.object({
   arrivals: joi.object(),
   rndNumbers: joi.array().items(joi.number().min(0)),
   queues: joi.array().items(joi.object({
@@ -15,6 +15,11 @@ const schema: joi.ObjectSchema = joi.object({
       min: joi.number(),
       max: joi.number(),
     }).required(),
+  })),
+  network: joi.array().items(joi.object({
+    source: joi.string().required(),
+    target: joi.string().required(),
+    probability: joi.number().min(0.1).max(100).required(),
   })),
 });
 

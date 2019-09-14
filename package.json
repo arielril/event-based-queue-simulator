@@ -25,21 +25,22 @@
     "url": "https://github.com/arielril/event-based-queue-simulator/issues"
   },
   "homepage": "https://github.com/arielril/event-based-queue-simulator#readme",
-  "devDependencies": {
-    "eslint": "^6.1.0",
-    "eslint-config-airbnb": "^18.0.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.14.3",
-    "jest": "^24.8.0",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.5.3"
-  },
   "dependencies": {
-    "@types/joi": "^14.3.3",
+    "@hapi/joi": "^16.0.1",
     "@types/node": "^12.7.2",
     "@types/ramda": "github:types/npm-ramda#dist",
-    "joi": "^14.3.1",
     "ramda": "^0.26.1"
+  },
+  "devDependencies": {
+    "@types/hapi__joi": "^15.0.4",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^18.0.0",
+    "eslint-plugin-jest": "^22.17.0",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.1.0",
+    "ts-node": "^8.3.0",
+    "tslint": "^5.20.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "typescript": "^3.5.3"
   }
 }
