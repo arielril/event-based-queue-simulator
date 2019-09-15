@@ -1,8 +1,8 @@
-/// <reference path="../types/FileParser.d.ts" />
+/// <reference path="../../types/FileParser.d.ts" />
 import fs from 'fs';
 import * as R from 'ramda';
 
-import { ConfigFileSchema, ParseConstant } from '../types';
+import { ConfigFileSchema, ParseConstant } from '../../types';
 import { fileSchema } from '../constants/fileSchema';
 
 function check(parsedFile: ConfigFileSchema): ConfigFileSchema {

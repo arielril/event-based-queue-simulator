@@ -1,16 +1,16 @@
 #!/usr/bin/env node
-import random from './runners/random';
-import simulation from './runners/simulation';
+import { random } from './models/Random';
+import { simulator } from './controllers/Simulator';
 
 const [, , command, ...args] = process.argv;
 
 switch (command) {
   case 'random':
-    random();
+    console.log('Random:', random());
     break;
   case 'run':
     console.log('Running simulation...');
-    simulation(...args);
+    simulator(...args);
     break;
   default:
     throw new Error('Invalid command');

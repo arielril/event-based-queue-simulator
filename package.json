@@ -3,14 +3,12 @@
   "version": "1.0.0",
   "description": "Event Based Queue Simulator",
   "main": "dist/index.js",
+  "types": "dist/types",
   "scripts": {
     "test": "jest",
     "build": "rm -rf dist && tsc",
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'test/**/*.ts'",
     "install:build": "npm install --only=production && npm run build"
-  },
-  "bin": {
-    "simulator": "./dist/index.js"
   },
   "repository": {
     "type": "git",

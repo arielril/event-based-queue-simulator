@@ -19,7 +19,7 @@ export interface ConfigFileSchema {
     [key: string]: number,
   };
   queues: FileQueues[];
-  network?: FileNetwork;
+  network?: FileNetwork[];
   rndNumbers: number[];
 }
 

@@ -5,6 +5,6 @@ export interface MinMax {
 
 export * from './FileParser';
 export * from './QueueEvent';
-export * from './EnvironmentQueue';
+export * from './Environment';
 export * from './Queue';
-export * from './DestinationQueue';
+export * from './Destination';

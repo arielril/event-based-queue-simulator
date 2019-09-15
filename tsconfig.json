@@ -4,10 +4,12 @@
     "module": "commonjs",
     "target": "es6",
     "esModuleInterop": true,
-    "strict": true
+    "strict": true,
+    "declaration": true,
+    "removeComments": true
   },
   "include": [
-    "./src/**/*"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules"
