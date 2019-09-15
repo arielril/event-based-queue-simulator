@@ -83,20 +83,25 @@ function addExit(rnd: number, min: number, max: number) {
 
 export default function simulation(...args: string[]): void {
   const [filePath, useRandom] = args;
+  // get object from config file
   const parsedFile: IFileObject = parse({ path: filePath });
+  // create a queu with the config
   const Q = getQueue(parsedFile);
   const rndNumbers = parsedFile.rndNumbers;
 
   let times = 0;
   let sizeOfSimulation = 100000;
 
+  // function to get the random probability and add time
   let getRND = () => { times += 1; return random(); };
 
   if (useRandom === 'useRandom') {
+    // set the random number to the provided from the config file
     sizeOfSimulation = rndNumbers.length;
     getRND = () => { times += 1; return rndNumbers.shift() || 0; };
   }
 
+  // add the first arrival to the scheduler
   SCHEDULER.push(fstArrival(parsedFile));
 
   while (SCHEDULER.length && times < sizeOfSimulation) {

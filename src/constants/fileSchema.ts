@@ -1,6 +1,6 @@
 import joi from '@hapi/joi';
 
-const schema = joi.object({
+const fileSchema = joi.object({
   arrivals: joi.object(),
   rndNumbers: joi.array().items(joi.number().min(0)),
   queues: joi.array().items(joi.object({
@@ -17,10 +17,10 @@ const schema = joi.object({
     }).required(),
   })),
   network: joi.array().items(joi.object({
-    source: joi.string().required(),
-    target: joi.string().required(),
-    probability: joi.number().min(0.1).max(100).required(),
+    src: joi.string().required(),
+    dst: joi.string().required(),
+    probability: joi.number().min(0.0001).max(1).required(),
   })),
 });
 
-export { schema };
+export { fileSchema };
