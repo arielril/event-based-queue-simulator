@@ -1,8 +1,7 @@
-/// <reference path="../../types/FileParser.d.ts" />
-import fs from 'fs';
+import * as fs from 'fs';
 import * as R from 'ramda';
 
-import { ConfigFileSchema, ParseConstant } from '../../types';
+import { ConfigFileSchema, ParseConstant } from '../../types/FileParser';
 import { fileSchema } from '../constants/fileSchema';
 
 function check(parsedFile: ConfigFileSchema): ConfigFileSchema {
@@ -34,7 +33,7 @@ const parseJson: ((s: string) => ConfigFileSchema) = R.tryCatch(
 const parse: ParseConstant = R.ifElse(
   R.has('path'),
   R.pipe(
-    (o: object): string => R.pathOr('', 'path', o),
+    (o: object): string => R.pathOr('', ['path'], o),
     (p: string) => fs.readFileSync(p, 'utf8'),
     parseJson,
   ),

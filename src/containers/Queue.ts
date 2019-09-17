@@ -2,11 +2,10 @@ import * as R from 'ramda';
 
 import {
   MinMax,
-  IEnvironment,
-  IQueue,
-  QueueContext,
-  IDestination,
 } from '../../types';
+import { IQueue, QueueContext } from '../../types/Queue';
+import { IEnvironment } from '../../types/Environment';
+import { IDestination } from '../../types/Destination';
 
 export class Queue implements IQueue {
   readonly _name: string;
@@ -35,7 +34,7 @@ export class Queue implements IQueue {
     this._destinations = [];
   }
 
-  updateUtilization(elapsed: number): void {
+  public updateUtilization(elapsed: number): void {
     this._utilization[this._population] = Number(
       (this._utilization[this._population] + elapsed).toFixed(4),
     );
@@ -52,11 +51,11 @@ export class Queue implements IQueue {
     return (max - min) * rnd + min;
   }
 
-  getName(): string {
+  public getName(): string {
     return this._name;
   }
 
-  arrival(isRedirect: boolean = false): void {
+  public arrival(isRedirect: boolean = false): void {
     this._environment.checkTime.bind(this._environment)();
     if (this._population < this._capacity) {
       this._population += 1;
@@ -72,11 +71,11 @@ export class Queue implements IQueue {
     }
   }
 
-  getArrivalDelay(): number {
+  public getArrivalDelay(): number {
     return this.getDelay(this._arrival);
   }
 
-  departure(): void {
+  public departure(): void {
     this._environment.checkTime.bind(this._environment)();
     this._population -= 1;
     if (this._population >= this._servers) {
@@ -84,7 +83,7 @@ export class Queue implements IQueue {
     }
   }
 
-  getDepartureDelay(): number {
+  public getDepartureDelay(): number {
     return this.getDelay(this._service);
   }
 
@@ -93,17 +92,16 @@ export class Queue implements IQueue {
    * list sorted from the lowest to the highest probability
    * @param dst Destination
    */
-  addDestination(dst: IDestination): void {
-    const cln = R.clone(this._destinations);
+  public addDestination(dst: IDestination): void {
     const prob = R.prop('_probability');
     const idx: number = R.findLastIndex(
       (lstDst: IDestination) => R.lt(prob(dst), prob(lstDst)),
-      cln,
+      this._destinations,
     );
-    this._destinations = R.insert(idx, dst, cln);
+    this._destinations = R.insert(idx, dst, this._destinations);
   }
 
-  getDestination(): IQueue | undefined {
+  public getDestination(): IQueue | undefined {
     // if there is no destination
     if (!this._destinations.length) {
       return;

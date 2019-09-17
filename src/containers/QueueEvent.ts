@@ -1,16 +1,22 @@
-import { EventType, IQueueEvent, EventContext, IQueue } from '../../types';
+import { IQueueEvent, EventContext } from '../../types/QueueEvent';
+import { IQueue } from '../../types/Queue';
+
+export enum EventType {
+  ARRIVAL = 'A',
+  DEPARTURE = 'D',
+}
 
 export class QueueEvent implements IQueueEvent {
   private static ID = 0;
   private _id: number;
-  private _type: EventContext['type'];
+  readonly type: EventContext['type'];
   readonly time: EventContext['time'];
   sourceQueue: IQueue;
   destinantionQueue?: IQueue;
 
   constructor (ctx: EventContext) {
     this._id = this.getId;
-    this._type = ctx.type;
+    this.type = ctx.type;
     this.time = ctx.time;
     this.sourceQueue = ctx.sourceQueue;
     this.destinantionQueue = ctx.destinantionQueue;
@@ -22,8 +28,8 @@ export class QueueEvent implements IQueueEvent {
     return id;
   }
 
-  is(type: EventType): boolean {
-    return this._type === type;
+  isType(type: EventType): boolean {
+    return this.type === type;
   }
 
   getTime(): EventContext['time'] {

@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import { random } from './models/Random';
 import { simulator } from './controllers/Simulator';
 

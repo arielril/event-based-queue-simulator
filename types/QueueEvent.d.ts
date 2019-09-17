@@ -1,9 +1,5 @@
 import { IQueue } from './Queue';
-
-export enum EventType {
-  ARRIVAL = 'A',
-  DEPARTURE = 'D',
-}
+import { EventType } from '../src/containers/QueueEvent';
 
 export interface EventContext {
   type: EventType;
@@ -14,6 +10,7 @@ export interface EventContext {
 
 export interface IQueueEvent {
   readonly time: EventContext['time'];
+  readonly type: EventContext['type'];
 
   sourceQueue: EventContext['sourceQueue'];
   destinantionQueue?: EventContext['destinantionQueue'];
@@ -22,7 +19,7 @@ export interface IQueueEvent {
    * Validates the type of an event
    * @param type
    */
-  is(type: EventType): boolean;
+  isType(type: EventType): boolean;
   /**
    * Get the event time
    */

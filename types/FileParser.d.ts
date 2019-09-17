@@ -1,4 +1,4 @@
-import { MinMax } from '.';
+import { MinMax } from './index';
 
 interface FileQueues {
   name: string;

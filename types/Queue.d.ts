@@ -1,4 +1,6 @@
-import { MinMax, IEnvironment, IDestination } from '.';
+import { MinMax } from './index';
+import { IDestination } from './Destination';
+import { IEnvironment } from './Environment';
 
 export interface IQueue {
   readonly _name: string;

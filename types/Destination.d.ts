@@ -1,4 +1,4 @@
-import { IQueue } from '.';
+import { IQueue } from './Queue';
 
 export interface IDestination {
   readonly _probability: number;

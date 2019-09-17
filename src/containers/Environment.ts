@@ -2,13 +2,12 @@ import * as R from 'ramda';
 import { random } from '../models/Random';
 import {
   IEnvironment,
-  IQueueEvent,
-  IQueue,
-  ConfigFileSchema,
-  EventType,
   EnvironmentContext,
-} from '../../types';
-import { QueueEvent } from './QueueEvent';
+} from '../../types/Environment';
+import { IQueueEvent } from '../../types/QueueEvent';
+import { IQueue } from '../../types/Queue';
+import { ConfigFileSchema } from '../../types/FileParser';
+import { QueueEvent, EventType } from './QueueEvent';
 
 /**
  * This is the Environment Queue which manages all the other queues and
@@ -22,12 +21,12 @@ export class Environment implements IEnvironment {
   private queues: Map<string, IQueue>;
 
   constructor (ctx: EnvironmentContext) {
-    this.eventList = [];
+    this.eventList = Array.from<QueueEvent>([]);
     this.time = 0;
     this.lastTime = 0;
     this.queues = new Map<string, IQueue>();
 
-    this.random = this.getRandomFunction(ctx.rndNumbers);
+    this.random = this.getRandomFunction.bind(this)(ctx.rndNumbers);
   }
 
   step(): void {
@@ -40,16 +39,16 @@ export class Environment implements IEnvironment {
     this.lastTime = this.time;
     this.time = ev.time;
 
-    if (ev.is(EventType.ARRIVAL)) {
+    if (ev.type === EventType.ARRIVAL) {
       ev.sourceQueue.arrival();
     }
 
-    if (ev.is(EventType.DEPARTURE)) {
+    if (ev.type === EventType.DEPARTURE) {
       ev.sourceQueue.departure();
       const destQueue = ev.destinantionQueue;
 
       if (destQueue) {
-        destQueue.arrival(true);
+        destQueue.arrival.bind(destQueue)(true);
       }
     }
   }
@@ -65,12 +64,11 @@ export class Environment implements IEnvironment {
   }
 
   private sortEventList(): void {
-    const cln = R.clone(this.eventList);
     const time = R.prop('time');
     const cmp = R.comparator(
       (a: IQueueEvent, b: IQueueEvent) => R.gte(time(a), time(b)),
     );
-    this.eventList = R.sort(cmp, cln);
+    this.eventList = R.sort(cmp, this.eventList);
   }
 
   private addEvent(ev: IQueueEvent): void {
@@ -80,7 +78,7 @@ export class Environment implements IEnvironment {
 
   scheduleArrival(queue: IQueue, initTime?: number): void {
     const delay = initTime || queue.getArrivalDelay.bind(queue)();
-    const ev = new QueueEvent({
+    const ev: IQueueEvent = new QueueEvent({
       type: EventType.ARRIVAL,
       time: delay,
       sourceQueue: queue,
@@ -100,7 +98,7 @@ export class Environment implements IEnvironment {
   }
 
   addQueue(queue: IQueue): void {
-    this.queues.set(queue.getName(), queue);
+    this.queues.set(queue.getName.bind(queue)(), queue);
   }
 
   getQueue(name: IQueue['_name']): IQueue | undefined {
