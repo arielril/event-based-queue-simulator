@@ -15,7 +15,7 @@ export class Queue implements IQueue {
   _service: MinMax;
   _environment: IEnvironment;
   private _population: number;
-  private _utilization: number[];
+  _utilization: number[];
   private _destinations: IDestination[];
 
   constructor (ctx: QueueContext) {
@@ -47,8 +47,8 @@ export class Queue implements IQueue {
    * @param param0.max Max val
    */
   private getDelay({ min, max }: MinMax): number {
-    const rnd = this._environment.random.bind(this._environment)();
-    return (max - min) * rnd + min;
+    const rnd = this._environment.random();
+    return Number(((max - min) * rnd + min).toFixed(4));
   }
 
   public getName(): string {
@@ -56,11 +56,15 @@ export class Queue implements IQueue {
   }
 
   public arrival(isRedirect: boolean = false): void {
-    this._environment.checkTime.bind(this._environment)();
+    this._environment.checkTime();
     if (this._population < this._capacity) {
       this._population += 1;
       if (this._population <= this._servers) {
-        this._environment.scheduleDeparture.bind(this._environment)(this, this.getDestination());
+        this._environment
+          .scheduleDeparture(
+            this,
+            this.getDestination(),
+          );
       }
     } else {
       // ! lost event
@@ -76,10 +80,14 @@ export class Queue implements IQueue {
   }
 
   public departure(): void {
-    this._environment.checkTime.bind(this._environment)();
+    this._environment.checkTime();
     this._population -= 1;
     if (this._population >= this._servers) {
-      this._environment.scheduleDeparture.bind(this._environment)(this, this.getDestination());
+      this._environment
+        .scheduleDeparture(
+          this,
+          this.getDestination(),
+        );
     }
   }
 

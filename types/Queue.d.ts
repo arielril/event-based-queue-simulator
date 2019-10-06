@@ -8,6 +8,7 @@ export interface IQueue {
   _capacity: number;
   _arrival: MinMax;
   _service: MinMax;
+  _utilization: number[];
 
   /**
    * Treat an arrival event

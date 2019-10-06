@@ -17,7 +17,7 @@ const addQueues = R.curry(
         service: q.service,
         environment: env,
       });
-      env.addQueue.bind(env)(nQueue);
+      env.addQueue(nQueue);
     }
     return env;
   },
@@ -27,11 +27,11 @@ const createNetwork = R.curry(
   ({ network }: ConfigFileSchema, env: IEnvironment): IEnvironment => {
     if (network) {
       for (const net of network) {
-        const srcQ = env.getQueue.bind(env)(net.src);
-        const dstQ = env.getQueue.bind(env)(net.dst);
+        const srcQ = env.getQueue(net.src);
+        const dstQ = env.getQueue(net.dst);
 
         if (srcQ && dstQ) {
-          srcQ.addDestination.bind(srcQ)(new Destination({
+          srcQ.addDestination(new Destination({
             dstQueue: dstQ,
             probability: net.probability,
           }));
@@ -45,9 +45,9 @@ const createNetwork = R.curry(
 const createArrivals = R.curry(
   ({ arrivals }: ConfigFileSchema, env: IEnvironment): IEnvironment => {
     for (const qName in arrivals) {
-      const q = env.getQueue.bind(env)(qName);
+      const q = env.getQueue(qName);
       if (q) {
-        env.scheduleArrival.bind(env)(q, arrivals[qName]);
+        env.scheduleArrival(q, arrivals[qName]);
       }
     }
     return env;
@@ -56,7 +56,9 @@ const createArrivals = R.curry(
 
 function createEnv(config: ConfigFileSchema, useRandom: boolean): IEnvironment {
   const rndNumbers = useRandom ? config.rndNumbers : undefined;
-  const env: IEnvironment = new Environment({ rndNumbers });
+  const env: IEnvironment = new Environment({
+    rndNumbers,
+  });
 
   return R.pipe(
     addQueues(config),
@@ -81,8 +83,13 @@ export function simulator(...args: string[]): void {
     sizeOfSimulation = configs.rndNumbers.length;
   }
 
-  while (env.eventList.length && env.time < sizeOfSimulation) {
-    console.log('size of simulation', env.time, sizeOfSimulation)
-    env.step();
+  while (env.eventList.length && env._rndQty < sizeOfSimulation) {
+    // console.log('size of simulation', env.time, sizeOfSimulation);
+    try {
+      env.step();
+    } catch (error) {
+      console.log(error.message);
+    }
   }
+  console.log('Util', env._rndQty, env.getResults());
 }

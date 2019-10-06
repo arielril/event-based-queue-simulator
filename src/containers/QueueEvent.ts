@@ -17,7 +17,7 @@ export class QueueEvent implements IQueueEvent {
   constructor (ctx: EventContext) {
     this._id = this.getId;
     this.type = ctx.type;
-    this.time = ctx.time;
+    this.time = Number(ctx.time.toFixed(4));
     this.sourceQueue = ctx.sourceQueue;
     this.destinantionQueue = ctx.destinantionQueue;
   }

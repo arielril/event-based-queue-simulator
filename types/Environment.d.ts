@@ -11,7 +11,7 @@ export interface IEnvironment {
   random: (() => number);
   time: number;
   lastTime: number;
-
+  _rndQty: number;
   step(): void;
 
   /**
@@ -43,4 +43,6 @@ export interface IEnvironment {
    * Computes the elapsed time for the entire simulation
    */
   checkTime(): void;
+
+  getResults(): { queue: string; utilization: number[]; }[];
 }

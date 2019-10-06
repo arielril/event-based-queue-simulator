@@ -19,14 +19,16 @@ export class Environment implements IEnvironment {
   time: number;
   lastTime: number;
   private queues: Map<string, IQueue>;
+  _rndQty: number;
+  private sizeOfSim: number = 100000;
 
   constructor (ctx: EnvironmentContext) {
     this.eventList = Array.from<QueueEvent>([]);
     this.time = 0;
     this.lastTime = 0;
+    this._rndQty = 0;
     this.queues = new Map<string, IQueue>();
-
-    this.random = this.getRandomFunction.bind(this)(ctx.rndNumbers);
+    this.random = this.getRandomFunction(ctx.rndNumbers);
   }
 
   step(): void {
@@ -48,7 +50,7 @@ export class Environment implements IEnvironment {
       const destQueue = ev.destinantionQueue;
 
       if (destQueue) {
-        destQueue.arrival.bind(destQueue)(true);
+        destQueue.arrival(true);
       }
     }
   }
@@ -57,16 +59,26 @@ export class Environment implements IEnvironment {
     () => number
   ) {
     if (rndNumbers) {
-      return () => rndNumbers.shift() || 0;
+      this.sizeOfSim = rndNumbers.length;
+      return () => {
+        const val = rndNumbers.shift();
+
+        this._rndQty += 1;
+
+        return val || 0;
+      };
     }
 
-    return random;
+    return () => {
+      this._rndQty += 1;
+      return random();
+    };
   }
 
   private sortEventList(): void {
     const time = R.prop('time');
     const cmp = R.comparator(
-      (a: IQueueEvent, b: IQueueEvent) => R.gte(time(a), time(b)),
+      (a: IQueueEvent, b: IQueueEvent) => R.lte(time(a), time(b)),
     );
     this.eventList = R.sort(cmp, this.eventList);
   }
@@ -77,20 +89,26 @@ export class Environment implements IEnvironment {
   }
 
   scheduleArrival(queue: IQueue, initTime?: number): void {
-    const delay = initTime || queue.getArrivalDelay.bind(queue)();
+    if (this._rndQty + 1 > this.sizeOfSim) {
+      throw new Error('End of simulation');
+    }
+    const delay = initTime || queue.getArrivalDelay();
     const ev: IQueueEvent = new QueueEvent({
       type: EventType.ARRIVAL,
-      time: delay,
+      time: Number((this.time + delay).toFixed(4)),
       sourceQueue: queue,
     });
     this.addEvent(ev);
   }
 
   scheduleDeparture(srcQueue: IQueue, dstQueue?: IQueue): void {
-    const delay = srcQueue.getDepartureDelay.bind(srcQueue)();
+    if (this._rndQty + 1 > this.sizeOfSim) {
+      throw new Error('End of simulation');
+    }
+    const delay = srcQueue.getDepartureDelay();
     const ev = new QueueEvent({
       type: EventType.DEPARTURE,
-      time: delay,
+      time: Number((this.time + delay).toFixed(4)),
       sourceQueue: srcQueue,
       destinantionQueue: dstQueue,
     });
@@ -98,7 +116,7 @@ export class Environment implements IEnvironment {
   }
 
   addQueue(queue: IQueue): void {
-    this.queues.set(queue.getName.bind(queue)(), queue);
+    this.queues.set(queue.getName(), queue);
   }
 
   getQueue(name: IQueue['_name']): IQueue | undefined {
@@ -106,9 +124,21 @@ export class Environment implements IEnvironment {
   }
 
   checkTime(): void {
-    const timeDiff = this.time - this.lastTime;
+    const timeDiff = Number((this.time - this.lastTime).toFixed(4));
     this.queues
-      .forEach(val => val.updateUtilization.bind(val)(timeDiff));
+      .forEach(val => val.updateUtilization(timeDiff));
     this.lastTime = this.time;
+  }
+
+  getResults(): { queue: string; utilization: number[]; }[] {
+    const l: { queue: string; utilization: number[]; }[] = [];
+    this.queues
+      .forEach((val, key) => {
+        l.push({
+          queue: key,
+          utilization: val._utilization,
+        });
+      });
+    return l;
   }
 }
