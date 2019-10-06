@@ -21,12 +21,14 @@ export class Queue implements IQueue {
   constructor (ctx: QueueContext) {
     this._name = ctx.name;
     this._servers = ctx.servers;
-    this._capacity = ctx.capacity;
+    this._capacity = ctx.capacity || Infinity;
     this._arrival = ctx.arrival;
     this._service = ctx.service;
     this._environment = ctx.environment;
-    // tslint:disable-next-line: prefer-array-literal
-    this._utilization = new Array(this._capacity + 1).fill(0);
+    this._utilization = this._capacity === Infinity
+      ? []
+      // tslint:disable-next-line: prefer-array-literal
+      : new Array(this._capacity + 1).fill(0);
     // current population of the queue
     this._population = 0;
 
@@ -35,6 +37,9 @@ export class Queue implements IQueue {
   }
 
   public updateUtilization(elapsed: number): void {
+    if (!this._utilization[this._population]) {
+      this._utilization[this._population] = 0;
+    }
     this._utilization[this._population] = Number(
       (this._utilization[this._population] + elapsed).toFixed(4),
     );
