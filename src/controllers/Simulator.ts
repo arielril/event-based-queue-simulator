@@ -91,5 +91,5 @@ export function simulator(...args: string[]): void {
       console.log(error.message);
     }
   }
-  console.log('Util', env._rndQty, env.getResults());
+  console.log('Utilization', env.getResults());
 }

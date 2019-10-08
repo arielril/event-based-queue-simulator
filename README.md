@@ -72,9 +72,90 @@ $ node ./dist/index.js run <path_to_config_file_json> useRandom
 
 **If the `rndNumbers` argument isn't provided the simulation will run with 100.000 random numbers**.
 
-After the run of the simulation it will print the quantity of time the queue was with each occupied capacity and the final time of the simulation.
+After the run of the simulation it will print the utilization of each queue.
 
 ```shell
-$ Times: [ 3, 7.0272, 13.7976, 13.8068, 61937.8212, 104563.23 ]
-$ Final Time: 166538.6828
+Utilization [
+  { queue: 'F1', utilization: [ 31078.2351, 24259.7272 ] },
+  {
+    queue: 'F2',
+    utilization: [ 2.3353, 3.0115, 7.1035, 1006.5378, 30194.8817, 24124.0925 ]
+  },
+  {
+    queue: 'F3',
+    utilization: [
+        10.6878,    3.0115,
+         3.0115,    3.0115,
+         3.0115,    5.7395,
+         6.3065, 9364.1785,
+      45939.004
+    ]
+  }
+]
+```
+
+## Assignment 1
+To execute the example provided by the Professor, you have to use the `./files/simulator_test1.json` config file. This config file creates the environment described [here](./files/Modelo.pdf).
+
+If you want to use the 100.000 random numbers already generated, you have to execute the following command:
+
+```shell
+$ node ./dist/index.js run ./files/simulator_test1.json useRandom
+```
+
+After the simulation ends the result will be this:
+
+```shell
+Utilization [
+  {
+    queue: 'F1',
+    utilization: [ 23347.2762, 23272.8805, 1751.8581, 97.1217 ]
+  },
+  {
+    queue: 'F2',
+    utilization: [
+      2358.7992,
+      1277.1243,
+      8201.5597,
+      10332.9626,
+      15197.5878,
+      11101.1029
+    ]
+  },
+  {
+    queue: 'F3',
+    utilization: [
+      16060.9195,   120.796,
+        222.4053,  128.9999,
+        229.6957,  112.8052,
+        342.1369, 3416.2132,
+      27835.1648
+    ]
+  }
+]
+```
+
+If you don't want to use the 100.00 random numbers provided in the config file, the following command must be executed:
+
+```shell
+$ node ./dist/index.js run ./files/simulator_test1.json
+```
+
+The result of the simulation can be something like this:
+
+```shell
+Utilization [
+  {
+    queue: 'F1',
+    utilization: [ 42161.0412, 28436.7862, 740.7105, 0.0081 ]
+  },
+  {
+    queue: 'F2',
+    utilization: [ 1502.3789, 752.0714, 34865.4388, 34218.6569, 0, 0 ]
+  },
+  {
+    queue: 'F3',
+    utilization: [ 67593.9159, 1, 1, 0.5, 0.5, 1, 1.0062, 341.9743, 3397.6496 ]
+  }
+] 
 ```
