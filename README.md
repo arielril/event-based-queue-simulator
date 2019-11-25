@@ -159,3 +159,6 @@ Utilization [
   }
 ] 
 ```
+
+## Assignment 2
+a mudanca realizada foi trocar o tamanho da fila 1 de 20 para 7, porque o tempo de chegada de eventos é bastante disperso mas o tempo de servico é bem rapido.
